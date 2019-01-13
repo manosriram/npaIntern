@@ -5,7 +5,9 @@ const key = require("./setup/url").secret;
 const bodyparser = require("body-parser");
 const session = require("express-session");
 const app = express();
+const cookieparser = require("cookie-parser");
 const port = process.env.PORT || 5000;
+const auth = require("./api/auth");
 
 app.listen(port, () => {
   console.log(`Server at ${port}`);
@@ -17,6 +19,7 @@ app.get("/", (req, res) => {
 
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
+app.use(cookieparser());
 
 mongoose
   .connect(
@@ -37,7 +40,7 @@ app.use(
     }
   })
 );
-
+app.use("/auth", auth);
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 
