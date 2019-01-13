@@ -16,7 +16,13 @@ const PersonSchema = new Schema({
   },
   location: {
     type: String
-  }
+  },
+  contacts: [{
+    user: {
+      type:Schema.Types.ObjectId,
+      ref: "myPerson"
+    }
+  }]
 });
 
-module.exports = Person = mongoose.model("Person", PersonSchema);
+module.exports = Person = mongoose.model("myPerson", PersonSchema);
