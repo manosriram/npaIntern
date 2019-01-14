@@ -1,5 +1,6 @@
 import InsertOk from "./InsertOk";
 import InsertEr from "./InsertEr";
+import { Route } from "react-router-dom";
 import React, { Component } from "react";
 const axios = require("axios");
 
@@ -13,7 +14,7 @@ class Register extends Component {
       password: "",
       location: "",
       receivedResponse: null,
-      msg: null
+      message: -1
     };
     this.handleClick = this.handleClick.bind(this);
     this.gameChanger = this.gameChanger.bind(this);
@@ -22,11 +23,8 @@ class Register extends Component {
   gameChanger() {
     axios
       .post("/auth/register", { data: this.state })
-      .then(function(res) {
-        console.log(res.data);
-        if (res.data === 200) alert("Registered Successfully");
-        if (res.data === 400) alert("Registered Successfully");
-        else alert("Problem!");
+      .then(res => {
+        this.setState({ message: res.data.message });
       })
       .catch(err => console.log(err));
   }
@@ -106,14 +104,13 @@ class Register extends Component {
           />
           <br />
           <div>
-            {this.state.msg && this.state.msg !== null && <p> 'no'</p>}
-            {!this.state.msg && this.state.msg !== null && <p>'ok'</p>}
+            {this.state.message === 1 && (
+              <Route render={props => <InsertOk />} />
+            )}
+            {this.state.message === 0 && (
+              <Route render={props => <InsertEr />} />
+            )}
           </div>
-          {/* <div>
-            <button className="ui animated button">
-              <div className="visible content" />
-            </button>
-          </div> */}
         </div>
       </div>
     );

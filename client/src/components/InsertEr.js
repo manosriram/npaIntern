@@ -5,7 +5,7 @@ class InsertEr extends Component {
     return (
       <div>
         <div className="alert alert-danger">
-          <strong>Email already Registered!</strong>
+          <strong>Problem!!</strong>
         </div>
       </div>
     );

@@ -17,7 +17,7 @@ router.post("/register", (req, res) => {
   const location = req.body.data.location;
   Person.findOne({ email: email })
     .then(person => {
-      if (person) return res.status(400).json({ data: 400 });
+      if (person) return res.json({ message: 0 });
       else {
         const newPerson = new Person({
           name: name,
@@ -35,7 +35,7 @@ router.post("/register", (req, res) => {
             newPerson.password = hash;
             newPerson
               .save()
-              .then(res.status(200).json({ data: 200 }))
+              .then(res.json({ message: 1 }))
               .catch(err => console.log(err));
           });
         });
@@ -68,30 +68,29 @@ router.post("/login", (req, res) => {
                 { expiresIn: 90000000 },
                 (err, token) => {
                   res.cookie("auth_t", token, { maxAge: 90000000 });
-                  return res.json({ message: 1 });
+                  res.json({ message: 1, name: person.name });
                 }
               );
             } else {
-              return res.json({ noAccess: 2 });
+              res.json({ message: 0 });
             }
           })
           .catch(err => console.log(err));
       })
       .catch(err => console.log(err));
   } else {
-    return res.json({ message: 3 });
+    res.json({ message: 0 });
   }
 });
 
 router.post("/logout", (req, res) => {
   jsonwt.verify(req.cookies.auth_t, key.secret, (err, user) => {
     if (user) {
-      console.log("logging out...");
       res.clearCookie("auth_t");
       req.logout();
-      return res.json({ message: "Logged Out!" });
+      res.json({ message: 1 });
     } else {
-      return res.json({ noUser: "Access Forbidden" });
+      res.json({ message: 0 });
     }
   });
 });
