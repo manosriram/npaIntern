@@ -1,19 +1,21 @@
+import Cookies from "universal-cookie";
 import React, { Component } from "react";
-import { Route, Redirect, BrowserRouter } from "react-router-dom";
+import { Route, BrowserRouter } from "react-router-dom";
 import "./App.css";
 import Home from "./components/Home";
 import Register from "./components/Register";
 import Login from "./components/Login";
-import Logout from "./components/Logout";
 import ContactList from "./components/ContactList";
 const axios = require("axios");
+const cookies = new Cookies();
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
       message: -1,
-      student: {}
+      student: {},
+      logged: -1
     };
     this.handleClick = this.handleClick.bind(this);
     this.logOut = this.logOut.bind(this);
@@ -34,14 +36,12 @@ class App extends Component {
   }
 
   logOut() {
-    axios
-      .post("/auth/logout")
-      .then(res =>
-        this.setState({ message: res.data.message }, () => {
-          console.log(this.state);
-        })
-      )
-      .catch(err => console.log(err));
+    if (cookies.get("auth_t")) {
+      cookies.remove("auth_t");
+      this.setState({ logged: 0 });
+    } else {
+      this.setState({ logged: 1 });
+    }
   }
 
   render() {
@@ -103,11 +103,21 @@ class App extends Component {
             <Route exact path="/" component={Home} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
-            <Route exact path="/contactList" component={ContactList} />
+            {/* <Route exact path="/contactList" component={ContactList} /> */}
             {this.state.message === 1 && (
               <Route
                 render={props => <ContactList data={this.state.student} />}
               />
+            )}
+            {this.state.logged === 0 && (
+              <div className="alert alert-success">
+                <strong>Logged Out!!</strong>
+              </div>
+            )}
+            {this.state.logged === 1 && (
+              <div className="alert alert-danger">
+                <strong>Not Logged In...</strong>
+              </div>
             )}
           </div>
         </BrowserRouter>

@@ -85,7 +85,7 @@ router.post("/login", (req, res) => {
 
 router.post("/logout", (req, res) => {
   jsonwt.verify(req.cookies.auth_t, key.secret, (err, user) => {
-    if (user) {
+    if (user.email) {
       res.clearCookie("auth_t");
       req.logout();
       return res.json({ message: 1 });

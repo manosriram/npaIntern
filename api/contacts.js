@@ -45,6 +45,8 @@ router.post("/addContact/:name", (req, res) => {
             .catch(err => console.log(err));
         })
         .catch(err => console.log(err));
+    } else {
+      return res.json({ status: 2 });
     }
   });
 });

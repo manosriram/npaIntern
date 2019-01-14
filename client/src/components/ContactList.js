@@ -24,7 +24,7 @@ class ContactList extends Component {
       .post(`/contacts/addContact/${name}`)
       .then(res =>
         this.setState(
-          { status: res.data.status, student: this.props.data },
+          { status: res.data.status, message: res.data.message },
           () => {
             console.log(this.state);
           }
@@ -46,6 +46,13 @@ class ContactList extends Component {
               <strong>
                 {this.state.status == 0 && (
                   <h1 id="alert2">Contact Already In your List!!</h1>
+                )}
+              </strong>
+            </div>
+            <div>
+              <strong>
+                {this.state.status == 2 && (
+                  <h1 id="alert3">Not Logged In....</h1>
                 )}
               </strong>
             </div>
