@@ -20,11 +20,17 @@ class App extends Component {
   }
 
   handleClick() {
-    axios.get(`/contacts/findContact/${this.refs.search.value}`)
-    .then(res => this.setState({student:res.data.students}, ()=> {
-      console.log(this.state.student);
-    }))
-    .catch(err => console.log(err));
+    axios
+      .get(`/contacts/findContact/${this.refs.search.value}`)
+      .then(res =>
+        this.setState(
+          { student: res.data.students, message: res.data.message },
+          () => {
+            console.log(this.state);
+          }
+        )
+      )
+      .catch(err => console.log(err));
   }
 
   logOut() {
@@ -74,32 +80,35 @@ class App extends Component {
                 type="submit"
                 onClick={this.logOut}
               >
-              Logout
+                Logout
               </button>
-              
             </ul>
-              <input
-                className="form-control mr-sm-2"
-                type="search"
-                placeholder="Search"
-                ref = "search"
-                aria-label="Search"
-              />
-              <button
-                className="btn btn-outline-success my-2 my-sm-0"
-                onClick={this.handleClick}
-              >
-                Search
-              </button>
+            <input
+              className="form-control mr-sm-2"
+              type="search"
+              placeholder="Search"
+              ref="search"
+              aria-label="Search"
+            />
+            <button
+              className="btn btn-outline-success my-2 my-sm-0"
+              onClick={this.handleClick}
+            >
+              Search
+            </button>
           </div>
         </nav>
         <BrowserRouter>
           <div>
-            {this.props.name && <h4>Welcome {this.props.name}</h4>}
             <Route exact path="/" component={Home} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
-            <Route exact path="/contactList" component={ContactList} data={this.state.student} />
+            <Route exact path="/contactList" component={ContactList} />
+            {this.state.message === 1 && (
+              <Route
+                render={props => <ContactList data={this.state.student} />}
+              />
+            )}
           </div>
         </BrowserRouter>
       </div>

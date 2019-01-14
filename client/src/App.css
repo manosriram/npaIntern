@@ -34,3 +34,10 @@
     transform: rotate(360deg);
   }
 }
+
+#alert2 {
+  color: red;
+}
+#alert1 {
+  color: greenyellow;
+}
