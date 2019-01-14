@@ -88,7 +88,7 @@ router.post("/logout", (req, res) => {
     if (user) {
       res.clearCookie("auth_t");
       req.logout();
-      res.json({ message: 1 });
+      return res.json({ message: 1 });
     } else {
       res.json({ message: 0 });
     }

@@ -7,7 +7,9 @@ const session = require("express-session");
 const app = express();
 const cookieparser = require("cookie-parser");
 const port = process.env.PORT || 5000;
+
 const auth = require("./api/auth");
+const contacts = require('./api/contacts');
 
 app.listen(port, () => {
   console.log(`Server at ${port}`);
@@ -41,6 +43,7 @@ app.use(
   })
 );
 app.use("/auth", auth);
+app.use("/contacts",contacts);
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 

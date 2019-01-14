@@ -5,23 +5,34 @@ import Home from "./components/Home";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import Logout from "./components/Logout";
+import ContactList from "./components/ContactList";
 const axios = require("axios");
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      message: ""
+      message: -1,
+      student: {}
     };
+    this.handleClick = this.handleClick.bind(this);
     this.logOut = this.logOut.bind(this);
+  }
+
+  handleClick() {
+    axios.get(`/contacts/findContact/${this.refs.search.value}`)
+    .then(res => this.setState({student:res.data.students}, ()=> {
+      console.log(this.state.student);
+    }))
+    .catch(err => console.log(err));
   }
 
   logOut() {
     axios
       .post("/auth/logout")
       .then(res =>
-        this.setState({ message: res }, () => {
-          console.log(res);
+        this.setState({ message: res.data.message }, () => {
+          console.log(this.state);
         })
       )
       .catch(err => console.log(err));
@@ -58,26 +69,28 @@ class App extends Component {
                   Register
                 </a>
               </li>
-              <li className="nav-item">
-                <a className="nav-link" href="/logout">
-                  Logout
-                </a>
-              </li>
+              <button
+                className="btn btn-outline-success my-2 my-sm-0"
+                type="submit"
+                onClick={this.logOut}
+              >
+              Logout
+              </button>
+              
             </ul>
-            <form className="form-inline my-2 my-lg-0">
               <input
                 className="form-control mr-sm-2"
                 type="search"
                 placeholder="Search"
+                ref = "search"
                 aria-label="Search"
               />
               <button
                 className="btn btn-outline-success my-2 my-sm-0"
-                type="submit"
+                onClick={this.handleClick}
               >
                 Search
               </button>
-            </form>
           </div>
         </nav>
         <BrowserRouter>
@@ -86,6 +99,7 @@ class App extends Component {
             <Route exact path="/" component={Home} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
+            <Route exact path="/contactList" component={ContactList} data={this.state.student} />
           </div>
         </BrowserRouter>
       </div>
