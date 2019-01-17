@@ -1,41 +1,47 @@
+import Cookies from "universal-cookie";
 import React, { Component } from "react";
-import { Route, Redirect, BrowserRouter } from "react-router-dom";
+import { Route, BrowserRouter } from "react-router-dom";
 import "./App.css";
 import Home from "./components/Home";
 import Register from "./components/Register";
 import Login from "./components/Login";
-import Logout from "./components/Logout";
 import ContactList from "./components/ContactList";
 const axios = require("axios");
+const cookies = new Cookies();
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
       message: -1,
-      student: {}
+      student: {},
+      logged: -1
     };
     this.handleClick = this.handleClick.bind(this);
     this.logOut = this.logOut.bind(this);
   }
 
   handleClick() {
-    axios.get(`/contacts/findContact/${this.refs.search.value}`)
-    .then(res => this.setState({student:res.data.students}, ()=> {
-      console.log(this.state.student);
-    }))
-    .catch(err => console.log(err));
+    axios
+      .get(`/contacts/findContact/${this.refs.search.value}`)
+      .then(res =>
+        this.setState(
+          { student: res.data.students, message: res.data.message },
+          () => {
+            console.log(this.state);
+          }
+        )
+      )
+      .catch(err => console.log(err));
   }
 
   logOut() {
-    axios
-      .post("/auth/logout")
-      .then(res =>
-        this.setState({ message: res.data.message }, () => {
-          console.log(this.state);
-        })
-      )
-      .catch(err => console.log(err));
+    if (cookies.get("auth_t")) {
+      cookies.remove("auth_t");
+      this.setState({ logged: 0 });
+    } else {
+      this.setState({ logged: 1 });
+    }
   }
 
   render() {
@@ -74,32 +80,45 @@ class App extends Component {
                 type="submit"
                 onClick={this.logOut}
               >
-              Logout
+                Logout
               </button>
-              
             </ul>
-              <input
-                className="form-control mr-sm-2"
-                type="search"
-                placeholder="Search"
-                ref = "search"
-                aria-label="Search"
-              />
-              <button
-                className="btn btn-outline-success my-2 my-sm-0"
-                onClick={this.handleClick}
-              >
-                Search
-              </button>
+            <input
+              className="form-control mr-sm-2"
+              type="search"
+              placeholder="Search"
+              ref="search"
+              aria-label="Search"
+            />
+            <button
+              className="btn btn-outline-success my-2 my-sm-0"
+              onClick={this.handleClick}
+            >
+              Search
+            </button>
           </div>
         </nav>
         <BrowserRouter>
           <div>
-            {this.props.name && <h4>Welcome {this.props.name}</h4>}
             <Route exact path="/" component={Home} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
-            <Route exact path="/contactList" component={ContactList} data={this.state.student} />
+            {/* <Route exact path="/contactList" component={ContactList} /> */}
+            {this.state.message === 1 && (
+              <Route
+                render={props => <ContactList data={this.state.student} />}
+              />
+            )}
+            {this.state.logged === 0 && (
+              <div className="alert alert-success">
+                <strong>Logged Out!!</strong>
+              </div>
+            )}
+            {this.state.logged === 1 && (
+              <div className="alert alert-danger">
+                <strong>Not Logged In...</strong>
+              </div>
+            )}
           </div>
         </BrowserRouter>
       </div>

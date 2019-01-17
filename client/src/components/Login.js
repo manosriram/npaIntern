@@ -1,15 +1,8 @@
 import React, { Component } from "react";
 import InsertEr from "./InsertEr";
-import { Redirect, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 import InsertOk from "./InsertOk";
-import App from "../App";
 const axios = require("axios");
-
-class NoUser extends Component {
-  render() {
-    return <h3>No user found with this Email.</h3>;
-  }
-}
 
 class Login extends Component {
   constructor() {
