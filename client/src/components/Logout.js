@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Route } from "react-router-dom";
 import InsertEr from "./InsertEr";
 import InsertOk from "./InsertOk";
-import { request } from "https";
 const axios = require("axios");
 
 class Logout extends Component {

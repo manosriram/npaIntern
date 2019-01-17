@@ -1,14 +1,9 @@
+import App from '../App';
 import "../App.css";
 import React, { Component } from "react";
 const axios = require("axios");
 
 class ContactList extends Component {
-<<<<<<< HEAD
-
-    render() {
-        return(
-            <h1>Hey there</h1>
-=======
   constructor(props) {
     super(props);
     this.state = {
@@ -34,11 +29,9 @@ class ContactList extends Component {
           () => {
             console.log(this.state);
           }
->>>>>>> af6b8baf26412e4f2bba75d8196bc10501e6f0ed
         )
       )
-	  .catch(err => console.
-		 log(err));
+	  .catch(err => console.log(err));
   }
 
     
@@ -96,6 +89,7 @@ class ContactList extends Component {
             </button>
             <br />
             <br />
+        
           </div>
         </div>
       </div>
@@ -103,4 +97,19 @@ class ContactList extends Component {
   }
 }
 
-export default ContactList;
+
+class Profile extends Component {
+  render() {
+    return(
+      <div>
+        <h1>hey there from Profile!!</h1>
+        <h3>Hello!!</h3>
+      </div>
+    );
+  }
+}
+
+export  {
+  ContactList,
+  Profile
+};

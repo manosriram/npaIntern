@@ -1,4 +1,3 @@
-import Profile from './components/Profile';
 import Cookies from "universal-cookie";
 import React, { Component } from "react";
 import { Route, BrowserRouter } from "react-router-dom";
@@ -6,7 +5,8 @@ import "./App.css";
 import Home from "./components/Home";
 import Register from "./components/Register";
 import Login from "./components/Login";
-import ContactList from "./components/ContactList";
+import {Profile} from './components/ContactList';
+import {ContactList} from "./components/ContactList";
 const axios = require("axios");
 const cookies = new Cookies();
 
@@ -77,6 +77,11 @@ class App extends Component {
                   Register
                 </a>
               </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/profile">
+                  Profile
+                </a>
+              </li>
               <button
                 className="btn btn-outline-success my-2 my-sm-0"
                 type="submit"
@@ -105,15 +110,18 @@ class App extends Component {
             <Route exact path="/" component={Home} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
-	    {cookies.get("auth_t") && 
-	     <Route exact path="/profile" component={Profile} />
-	    }
-	{/* <Route exact path="/contactList" component={ContactList} /> */}
+            
+	 
             {this.state.message === 1 && (
               <Route
                 render={props => <ContactList data={this.state.student} />}
               />
             )}
+
+            {this.state.message === 1 && (
+              <Route render={props => <Profile />}/>
+            )}
+
             {this.state.logged === 0 && (
               <div className="alert alert-success">
                 <strong>Logged Out!!</strong>
