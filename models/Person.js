@@ -22,7 +22,12 @@ const PersonSchema = new Schema({
       user: {
         type: Schema.Types.ObjectId,
         ref: "myPerson"
-      }
+      },
+	name: {
+	    type: String
+	}
+
+
     }
   ]
 });
