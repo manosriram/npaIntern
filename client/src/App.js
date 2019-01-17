@@ -1,3 +1,4 @@
+import Profile from './components/Profile';
 import Cookies from "universal-cookie";
 import React, { Component } from "react";
 import { Route, BrowserRouter } from "react-router-dom";
@@ -8,6 +9,7 @@ import Login from "./components/Login";
 import ContactList from "./components/ContactList";
 const axios = require("axios");
 const cookies = new Cookies();
+
 
 class App extends Component {
   constructor() {
@@ -103,7 +105,10 @@ class App extends Component {
             <Route exact path="/" component={Home} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
-            {/* <Route exact path="/contactList" component={ContactList} /> */}
+	    {cookies.get("auth_t") && 
+	     <Route exact path="/profile" component={Profile} />
+	    }
+	{/* <Route exact path="/contactList" component={ContactList} /> */}
             {this.state.message === 1 && (
               <Route
                 render={props => <ContactList data={this.state.student} />}

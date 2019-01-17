@@ -4,6 +4,31 @@ import { Route } from "react-router-dom";
 import InsertOk from "./InsertOk";
 const axios = require("axios");
 
+class ShowAll extends Component {
+  constructor() {
+    super();
+    this.state = {};
+    this.showContacts = this.showContacts.bind(this);
+  }
+
+  showContacts() {
+    axios
+      .post(`/contacts/getAllContacts/${this.props.name}`)
+      .then(res => res.json(res))
+      .then(res => console.log(res));
+  }
+
+  render() {
+    return (
+      <div>
+        <button onClick={this.showContacts} class="btn btn-primary">
+          Show All Contacts.{" "}
+        </button>
+      </div>
+    );
+  }
+}
+
 class Login extends Component {
   constructor() {
     super();
@@ -80,6 +105,9 @@ class Login extends Component {
         {this.state.message === 1 && <Route render={props => <InsertOk />} />}
         {this.state.message === 0 && <Route render={props => <InsertEr />} />}
         {/* <App name={this.state.name} /> */}
+        {this.state.message === 1 && (
+          <Route render={props => <ShowAll name={this.state.name} />} />
+        )}
       </div>
     );
   }

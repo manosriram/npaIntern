@@ -30,8 +30,12 @@ class ContactList extends Component {
           }
         )
       )
-      .catch(err => console.log(err));
+	  .catch(err => console.
+		 log(err));
   }
+
+    
+    
   render() {
     return (
       <div>
@@ -58,7 +62,7 @@ class ContactList extends Component {
             </div>
             <br />
             <br />
-
+	    
             <div>
               <strong>
                 <h3>Name : {this.state.student.name}</h3>
